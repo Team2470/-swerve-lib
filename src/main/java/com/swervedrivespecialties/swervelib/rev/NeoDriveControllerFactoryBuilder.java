@@ -37,7 +37,7 @@ public final class NeoDriveControllerFactoryBuilder {
 
     private class FactoryImplementation implements DriveControllerFactory<ControllerImplementation, Integer> {
         @Override
-        public ControllerImplementation create(Integer id, ModuleConfiguration moduleConfiguration) {
+        public ControllerImplementation create(Integer id, String _canbus, ModuleConfiguration moduleConfiguration) {
             CANSparkMax motor = new CANSparkMax(id, CANSparkMaxLowLevel.MotorType.kBrushless);
             motor.setInverted(moduleConfiguration.isDriveInverted());
 
@@ -76,6 +76,11 @@ public final class NeoDriveControllerFactoryBuilder {
         }
 
         @Override
+        public Object getDriveMotor() {
+            return this.motor;
+        }
+
+        @Override
         public void setReferenceVoltage(double voltage) {
             motor.setVoltage(voltage);
         }
@@ -83,6 +88,11 @@ public final class NeoDriveControllerFactoryBuilder {
         @Override
         public double getStateVelocity() {
             return encoder.getVelocity();
+        }
+
+        @Override
+        public double getStateDistance() {
+            return encoder.getPosition();
         }
     }
 }
